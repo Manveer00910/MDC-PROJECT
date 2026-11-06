@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HydraBytes | Flash Flood Early Warning</title>
+<style>
+:root{--bg:#06111f;--panel:#0b1b2c;--panel2:#0d2236;--cyan:#21d4f4;--muted:#8fa9bd;--line:#183d55;--white:#edf8ff;--red:#ff4d5e;--orange:#ff9f43;--green:#38d9a9}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% 0%,#12314a 0,transparent 38%),var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--white)}
+button,input,select{font:inherit}.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}.sidebar{padding:26px 18px;background:#06101c;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:25px}.brand{display:flex;gap:11px;align-items:center}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(145deg,var(--cyan),#1768aa);display:grid;place-items:center;color:#03111b;font-size:22px;font-weight:900}.brand strong{display:block;font-size:16px;letter-spacing:.5px}.brand small{color:var(--muted)}.nav{display:grid;gap:8px}.nav button{border:1px solid transparent;text-align:left;background:transparent;color:#a8bfd0;padding:12px;border-radius:10px;cursor:pointer}.nav button.active,.nav button:hover{background:#0d2739;color:var(--cyan);border-color:#15506a}.sidebar-note{margin-top:auto;border:1px solid var(--line);background:#0a1a29;padding:14px;border-radius:12px;font-size:12px;color:var(--muted);line-height:1.5}.sidebar-note b{color:var(--cyan)}main{padding:30px;max-width:1500px;width:100%;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:25px}.eyebrow{color:var(--cyan);font-size:11px;letter-spacing:2px;font-weight:800}.topbar h1{font-size:clamp(25px,3vw,36px);margin:7px 0}.sub{color:var(--muted);margin:0;font-size:14px}.status{display:flex;align-items:center;gap:8px;padding:10px 13px;border:1px solid #1e574f;background:#0b2a2a;color:#76f0cb;border-radius:30px;font-size:12px;white-space:nowrap}.dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 12px var(--green)}.hero{display:grid;grid-template-columns:1.4fr .8fr;gap:18px;margin-bottom:18px}.hero-card,.card{background:linear-gradient(145deg,rgba(13,34,54,.97),rgba(7,22,36,.98));border:1px solid var(--line);border-radius:17px;padding:21px;box-shadow:0 10px 30px #0002}.hero-card{position:relative;overflow:hidden;min-height:225px}.hero-card:after{content:"";position:absolute;width:300px;height:300px;border:1px solid #1b7695;border-radius:50%;right:-80px;top:15px;box-shadow:0 0 0 25px #16bddd08,0 0 0 55px #16bddd06}.hero-card h2{font-size:27px;max-width:520px;margin:10px 0}.hero-card p{color:var(--muted);max-width:520px;line-height:1.6;font-size:14px}.hero-card .tag{display:inline-block;color:#ffb5bc;background:#4a1722;border:1px solid #78303b;padding:6px 9px;border-radius:6px;font-size:11px;font-weight:800;letter-spacing:.6px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.btn{border:0;border-radius:9px;padding:11px 15px;background:var(--cyan);color:#03202a;font-weight:800;cursor:pointer}.btn.secondary{background:#102b40;border:1px solid #24526a;color:#d7f6ff}.risk-card{display:flex;flex-direction:column;justify-content:space-between}.risk-head{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}.risk-pill{padding:6px 10px;border-radius:7px;background:#4a1722;color:#ff7b86;font-size:11px;font-weight:900}.risk-value{font-size:35px;font-weight:850;margin:18px 0 4px;color:#ff6672}.risk-caption{font-size:13px;color:var(--muted)}.risk-meter{height:9px;background:#132c40;border-radius:9px;overflow:hidden;margin:18px 0 10px}.risk-meter span{display:block;width:78%;height:100%;background:linear-gradient(90deg,#f6c945,#ff704a,#f04455);border-radius:9px}.meter-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.metric{padding:17px;border:1px solid var(--line);border-radius:13px;background:#0a1b2b}.metric-label{color:var(--muted);font-size:12px}.metric-val{font-size:25px;font-weight:800;margin:8px 0}.metric-foot{font-size:11px;color:#7be8cc}.metric-foot.warn{color:#ffb85c}.layout{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}.card-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:17px}.card-title h3{font-size:16px;margin:0}.card-title span{color:var(--muted);font-size:11px}.map{height:280px;border-radius:12px;overflow:hidden;position:relative;border:1px solid #20485b;background:linear-gradient(150deg,#173d45,#102d39 48%,#173d3c);isolation:isolate}.map:before{content:"";position:absolute;inset:-30px;background:repeating-radial-gradient(ellipse at 35% 35%,transparent 0 19px,#5f9d81 20px 21px,transparent 22px 37px),repeating-radial-gradient(ellipse at 70% 70%,transparent 0 27px,#477b73 28px 29px,transparent 30px 49px);opacity:.5;transform:rotate(-12deg)}.river{position:absolute;width:120%;height:44px;top:46%;left:-10%;transform:rotate(-18deg);background:#167ba1;border:4px solid #38b9dc;border-left:0;border-right:0;box-shadow:0 0 22px #1dbbe5}.road{position:absolute;width:120%;height:3px;background:#b5b7a0;top:65%;left:-10%;transform:rotate(21deg);opacity:.8}.pin{position:absolute;z-index:2;width:17px;height:17px;border:3px solid #fff;border-radius:50%;background:#ff4d5e;box-shadow:0 0 0 7px #ff4d5e30,0 0 22px #ff4d5e;cursor:pointer}.pin.p1{left:30%;top:35%}.pin.p2{left:62%;top:55%;background:#ffb12e;box-shadow:0 0 0 7px #ffb12e30,0 0 22px #ffb12e}.pin.p3{left:78%;top:25%;background:#32d5ad;box-shadow:0 0 0 7px #32d5ad30,0 0 22px #32d5ad}.map-label{position:absolute;z-index:3;padding:5px 7px;background:#061521d9;border:1px solid #32677a;border-radius:5px;font-size:10px}.ml1{left:34%;top:30%}.ml2{left:65%;top:51%}.ml3{left:68%;top:13%}.map-legend{position:absolute;bottom:12px;left:12px;display:flex;gap:10px;flex-wrap:wrap;background:#061521df;padding:8px;border-radius:7px;font-size:10px}.legend-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}.chart{height:190px;width:100%;display:block}.chart-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:10px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;color:#b5cad8;font-size:12px;margin-bottom:7px}.field input,.field select{width:100%;background:#061523;border:1px solid #21465d;border-radius:8px;color:#eafaff;padding:11px;outline:none}.field input:focus,.field select:focus{border-color:var(--cyan)}.form-full{grid-column:1/-1}.prediction-result{display:none;margin-top:15px;border:1px solid var(--line);border-radius:10px;padding:14px;background:#071725}.prediction-result.show{display:block}.result-title{font-weight:900;font-size:18px;margin-bottom:6px}.small{font-size:12px;color:var(--muted);line-height:1.5}.alerts{display:grid;gap:10px}.alert{display:flex;gap:11px;padding:12px;border-radius:10px;background:#101f2d;border:1px solid #263e50}.alert-icon{width:34px;height:34px;flex-shrink:0;border-radius:9px;display:grid;place-items:center;background:#4a1b25;color:#ff7884}.alert-icon.orange{background:#4b3215;color:#ffc46b}.alert-icon.green{background:#103b35;color:#64ebc5}.alert b{display:block;font-size:12px;margin-bottom:4px}.alert small{color:var(--muted);font-size:11px;line-height:1.4}.footer{color:#58778c;text-align:center;font-size:10px;margin:22px 0 5px}.page{display:none}.page.active{display:block}.source-note{font-size:11px;color:#8ca6b9;margin-top:12px;line-height:1.5}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{padding:12px 16px;border-right:0;border-bottom:1px solid var(--line)}.nav{grid-template-columns:repeat(4,1fr)}.nav button{text-align:center;font-size:12px;padding:9px 5px}.sidebar-note{display:none}main{padding:18px}.hero,.layout{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.topbar{align-items:flex-start;flex-direction:column}.metrics{gap:8px}.metric{padding:12px}.metric-val{font-size:21px}.hero-card,.card{padding:16px}.form-grid{grid-template-columns:1fr}.form-full{grid-column:auto}.nav{grid-template-columns:repeat(2,1fr)}}
+
+/* HYDRABYTES VISUAL REDESIGN V2 — styling only */
+:root{--bg:#f3f6fb;--panel:#ffffff;--panel2:#eef4fa;--cyan:#087eaa;--muted:#64748b;--line:#dbe4ee;--white:#172b43;--red:#dc4657;--orange:#d97706;--green:#059669}
+*{box-sizing:border-box}body{margin:0;background:#f3f6fb;color:#172b43;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:-.01em}
+.app{grid-template-columns:260px minmax(0,1fr);min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;padding:30px 20px;background:linear-gradient(165deg,#102b48 0%,#0b1d34 70%,#102e47 100%);border:0;box-shadow:8px 0 30px #142b4410;gap:32px}.brand{padding:4px 8px 20px;border-bottom:1px solid #ffffff20}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#47d5df,#1689bd);color:#06233a;box-shadow:0 8px 20px #18b8d944;font-size:24px}.brand strong{color:#fff;font-size:18px;letter-spacing:.2px}.brand small{display:block;color:#a8c0d5;margin-top:4px;font-size:11px}.nav{gap:9px}.nav button{color:#b6c8d9;padding:14px 15px;border-radius:12px;font-size:13px;font-weight:650;transition:.2s}.nav button.active,.nav button:hover{background:linear-gradient(90deg,#0c789e55,#0c789e20);border-color:#42c4df55;color:#75e4f4;box-shadow:inset 3px 0 #42c4df}.sidebar-note{background:#ffffff0b;border:1px solid #ffffff20;color:#b5c9da;border-radius:14px;padding:16px;font-size:11px}.sidebar-note b{color:#65d9e9;letter-spacing:.7px}
+main{max-width:1600px;padding:38px 42px;margin:0 auto}.topbar{margin-bottom:30px;padding-bottom:23px;border-bottom:1px solid #dce5ef}.eyebrow{color:#0b86a9;letter-spacing:2.2px;font-size:10px}.topbar h1{font-size:clamp(28px,3vw,39px);letter-spacing:-1.3px;color:#142b45;margin:9px 0}.sub{color:#718096;font-size:13px}.status{background:#e7f8f2;color:#087c5c;border:1px solid #b9ead8;border-radius:9px;font-weight:700;padding:10px 14px}.dot{box-shadow:0 0 0 4px #10b98120}
+.hero{grid-template-columns:1.45fr .75fr;gap:20px;margin-bottom:20px}.hero-card,.card{background:#fff;border:1px solid #e0e8f1;border-radius:18px;padding:25px;box-shadow:0 8px 28px #18324b0a}.hero-card{min-height:250px;background:linear-gradient(115deg,#103653 0%,#125b78 65%,#087e9b 100%);border:0;box-shadow:0 15px 35px #0e527522}.hero-card:after{border-color:#ffffff30;box-shadow:0 0 0 25px #ffffff08,0 0 0 55px #ffffff06}.hero-card h2{color:#fff;font-size:32px;line-height:1.15;letter-spacing:-1px}.hero-card p{color:#d1e7f1;font-size:14px;line-height:1.7}.hero-card .tag{background:#ffffff19;color:#b9f2fa;border:1px solid #ffffff35;border-radius:30px;padding:7px 12px}.btn{background:#52d5df;color:#073149;border-radius:10px;padding:12px 17px;box-shadow:0 5px 14px #062d4330;transition:transform .2s,box-shadow .2s}.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px #062d4340}.btn.secondary{background:#ffffff18;color:#fff;border:1px solid #ffffff50;box-shadow:none}.risk-card{background:linear-gradient(145deg,#fff,#f7fbff)}.risk-head{color:#64748b}.risk-pill{border-radius:30px;background:#fff0f1;color:#c93449;padding:7px 12px}.risk-value{font-size:42px;color:#dc4657;letter-spacing:-1px}.risk-meter{height:10px;background:#e8edf4}.metrics{gap:15px;margin-bottom:20px}.metric{background:#fff;border:1px solid #e0e8f1;border-radius:15px;padding:19px;box-shadow:0 6px 20px #18324b08;transition:transform .2s,box-shadow .2s}.metric:hover{transform:translateY(-3px);box-shadow:0 12px 25px #18324b12}.metric-label{color:#718096;font-size:11px;font-weight:750;letter-spacing:.7px;text-transform:uppercase}.metric-val{color:#183650;font-size:28px;letter-spacing:-.7px}.metric-foot{color:#059669}.layout{gap:20px}.card-title{margin-bottom:20px}.card-title h3{color:#183650;font-size:17px;letter-spacing:-.3px}.card-title span{color:#7a8ba0}.map{border:1px solid #cbdde7;border-radius:15px;background:linear-gradient(150deg,#d8eee7,#b7d8d1 48%,#d4e9df)}.map:before{opacity:.35}.river{background:#299ec0;border-color:#74d3e5;box-shadow:0 0 22px #299ec055}.map-label{background:#fff;color:#24425a;border-color:#d4e2eb;box-shadow:0 3px 10px #19384b18}.map-legend{background:#ffffffed;color:#36536a;border:1px solid #dce7ee}.chart{color:#183650}.chart-labels{color:#718096}.field label{color:#40566d;font-weight:650}.field input,.field select{background:#f8fafc;border:1px solid #d7e1eb;border-radius:10px;color:#1c344b;padding:12px}.field input:focus,.field select:focus{border-color:#1697b8;box-shadow:0 0 0 3px #1697b81c}.prediction-result{background:#f5faff;border-color:#d9e7f2;border-radius:13px}.small,.source-note{color:#718096}.alert{background:#f8fafc;border:1px solid #e2eaf2;border-radius:13px;padding:15px}.alert b{color:#263e55}.alert-icon{border-radius:11px}.footer{color:#91a0b1;margin-top:30px}.page.active{animation:pageIn .25s ease}@keyframes pageIn{from{opacity:.55;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+#regions table{border-collapse:separate!important;border-spacing:0;width:100%}#regions th{background:#f0f5fa;color:#50657a!important;font-size:10px;text-transform:uppercase;letter-spacing:.5px}#regions td{color:#334b62;border-bottom:1px solid #e7edf3}#regions th:first-child{border-radius:9px 0 0 0}#regions th:last-child{border-radius:0 9px 0 0}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto;padding:17px 16px;gap:16px}.brand{padding:0 5px 12px}.nav{grid-template-columns:repeat(3,1fr)}.nav button{background:#ffffff09}.sidebar-note{display:none}main{padding:22px}.hero,.layout{grid-template-columns:1fr}}
+@media(max-width:520px){main{padding:15px}.topbar{align-items:flex-start;flex-direction:column}.hero-card h2{font-size:27px}.metrics{gap:9px}.metric{padding:13px}.metric-val{font-size:22px}.hero-card,.card{padding:17px}.nav{grid-template-columns:repeat(2,1fr)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+
+
+/* HYDRABYTES SIDEBAR — high-contrast light premium redesign */
+.app{grid-template-columns:292px minmax(0,1fr)!important}
+.sidebar{
+  position:relative!important;isolation:isolate!important;overflow:hidden!important;
+  min-height:100vh!important;padding:26px 18px 20px!important;
+  display:flex!important;flex-direction:column!important;gap:25px!important;
+  background:linear-gradient(180deg,#f8fbff 0%,#eef5fb 55%,#e8f1f8 100%)!important;
+  border-right:1px solid #d8e5ef!important;
+  box-shadow:8px 0 28px rgba(28,70,103,.07)!important;
+}
+.sidebar:before{
+  content:""!important;position:absolute!important;z-index:-1!important;
+  width:230px!important;height:230px!important;right:-100px!important;top:-95px!important;
+  border-radius:50%!important;background:radial-gradient(circle,#bdebf3 0%,rgba(189,235,243,0) 72%)!important;
+  pointer-events:none!important;
+}
+.sidebar:after{
+  content:"HYDRABYTES  /  FLOOD INTELLIGENCE"!important;
+  position:absolute!important;top:145px!important;left:22px!important;
+  color:#9aafc1!important;font-size:8px!important;font-weight:850!important;
+  letter-spacing:1.45px!important;pointer-events:none!important;
+}
+.brand{
+  display:flex!important;align-items:center!important;gap:13px!important;
+  padding:4px 7px 22px!important;border-bottom:1px solid #d8e5ef!important;
+}
+.logo{
+  width:52px!important;height:52px!important;flex:0 0 52px!important;
+  display:grid!important;place-items:center!important;border-radius:17px!important;
+  background:linear-gradient(145deg,#20c7d8 0%,#1685c2 100%)!important;
+  color:#062b45!important;font-size:26px!important;font-weight:950!important;
+  box-shadow:0 9px 20px rgba(19,155,193,.24),inset 0 1px 0 rgba(255,255,255,.6)!important;
+}
+.brand strong{display:block!important;color:#12314b!important;font-size:19px!important;font-weight:900!important;letter-spacing:-.5px!important}
+.brand small{display:block!important;margin-top:4px!important;color:#6d879c!important;font-size:11px!important;font-weight:600!important}
+.nav{display:grid!important;gap:9px!important;margin-top:17px!important}
+.nav button{
+  display:flex!important;align-items:center!important;gap:12px!important;
+  min-height:49px!important;padding:12px 14px!important;
+  border:1px solid transparent!important;border-radius:14px!important;
+  background:transparent!important;color:#567087!important;
+  text-align:left!important;font-size:13px!important;font-weight:750!important;
+  transition:all .2s ease!important;box-shadow:none!important;
+}
+.nav button:hover{
+  background:#fff!important;border-color:#d9e8f1!important;color:#087da5!important;
+  transform:translateX(3px)!important;box-shadow:0 5px 14px rgba(31,76,108,.06)!important;
+}
+.nav button.active{
+  background:linear-gradient(105deg,#d9f7fa 0%,#e9f6ff 100%)!important;
+  border:1px solid #9edfe9!important;color:#087b9d!important;
+  box-shadow:inset 4px 0 0 #20bfd1,0 7px 18px rgba(26,130,159,.09)!important;
+}
+.sidebar-note{
+  position:relative!important;margin-top:auto!important;padding:17px 15px 16px 17px!important;
+  border:1px solid #d3e3ed!important;border-radius:17px!important;
+  background:linear-gradient(145deg,#ffffff 0%,#f0f8fc 100%)!important;
+  color:#60798d!important;font-size:11px!important;line-height:1.65!important;
+  box-shadow:0 9px 24px rgba(33,77,107,.07)!important;
+}
+.sidebar-note b{
+  display:flex!important;align-items:center!important;gap:8px!important;
+  margin-bottom:8px!important;color:#087fa3!important;
+  font-size:10px!important;font-weight:900!important;letter-spacing:1.1px!important;
+}
+.sidebar-note b:before{
+  content:""!important;width:8px!important;height:8px!important;border-radius:50%!important;
+  background:#18b98d!important;box-shadow:0 0 0 4px #d9f6ed!important;
+}
+@media(max-width:900px){
+ .app{grid-template-columns:1fr!important}
+ .sidebar{min-height:auto!important;height:auto!important;padding:16px!important;gap:12px!important}
+ .sidebar:after{display:none!important}
+ .brand{padding:0 5px 13px!important}
+ .logo{width:42px!important;height:42px!important;flex-basis:42px!important;border-radius:14px!important}
+ .nav{grid-template-columns:repeat(4,minmax(0,1fr))!important;margin-top:0!important;gap:6px!important}
+ .nav button{justify-content:center!important;min-height:42px!important;padding:8px 5px!important;font-size:11px!important}
+ .sidebar-note{display:none!important}
+}
+@media(max-width:520px){
+ .nav{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .nav button{justify-content:flex-start!important;padding:9px 11px!important}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">H</div><div><strong>HydraBytes</strong><small>Flood intelligence</small></div></div>
+  <nav class="nav">
+    <button class="active" data-page="overview">▦ &nbsp; Overview</button>
+    <button data-page="predict">⌁ &nbsp; Risk predictor</button>
+    <button data-page="alerts">⚠ &nbsp; Alerts</button>
+    <button data-page="regions">⌖ &nbsp; State data</button>
+    <button data-page="about">ⓘ &nbsp; About project</button>
+  </nav>
+  <div class="sidebar-note"><b>LIVE WEATHER FEED</b><br>Weather conditions and forecasts are retrieved from Open-Meteo. They are model-derived, not direct station observations. River gauge levels remain unavailable unless verified official data is connected.</div>
+</aside>
+<main>
+<header class="topbar"><div><div class="eyebrow">DISASTER MANAGEMENT • MDC AI PROJECT</div><h1>Flash Flood Early Warning</h1><p class="sub">Terrain-aware monitoring for vulnerable hilly regions.</p></div><div class="status"><span class="dot"></span> Python API demo</div></header>
+
+<section id="overview" class="page active">
+  <div class="hero">
+    <div class="hero-card"><span class="tag">⚠ DEMONSTRATION DASHBOARD</span><h2>See the risk early.<br><span style="color:var(--cyan)">Protect communities.</span></h2><p>Combine rainfall, stream conditions and terrain indicators to demonstrate how an AI-assisted early-warning workflow could support local decision-making.</p><div class="hero-actions"><button class="btn" onclick="showPage('predict')">Run a risk assessment ↗</button><button class="btn secondary" onclick="showPage('about')">How it works</button></div></div>
+    <div class="hero-card risk-card"><div class="risk-head">AI DEMO OUTPUT <span class="risk-pill" id="overviewPill">NOT A WARNING</span></div><div><div class="risk-value" id="overviewRisk" style="font-size:26px">Not calculated</div><div class="risk-caption" id="overviewCaption">No live flood-risk warning is issued by this prototype.</div></div><div><div class="risk-meter"><span id="overviewMeter"></span></div><div class="meter-labels"><span>LOW</span><span>MODERATE</span><span>HIGH</span><span>CRITICAL</span></div></div></div>
+  </div>
+  <div class="metrics">
+    <div class="metric"><div class="metric-label">Current precipitation · model</div><div class="metric-val"><span id="rainMetric">—</span> <small style="font-size:12px;color:var(--muted)">mm</small></div><div class="metric-foot" id="rainFoot">Waiting for weather API</div></div>
+    <div class="metric"><div class="metric-label">Official river gauge level</div><div class="metric-val" style="font-size:20px"><span id="waterMetric">Unavailable</span></div><div class="metric-foot warn">No verified gauge feed</div></div>
+    <div class="metric"><div class="metric-label">Weather source</div><div class="metric-val" style="font-size:20px">Open-Meteo</div><div class="metric-foot">City-point temperature in °C + forecast</div></div>
+    <div class="metric"><div class="metric-label">Last API refresh</div><div class="metric-val" style="font-size:16px" id="weatherUpdated">Loading…</div><div class="metric-foot" id="weatherStatus">Fetching weather data</div></div>
+  </div>
+  <div class="layout">
+    <div class="card"><div class="card-title"><h3>Terrain risk overview</h3><span>Illustrative GIS-style view</span></div>
+      <div class="map"><div class="river"></div><div class="road"></div><button class="pin p1" title="High-risk zone"></button><button class="pin p2" title="Moderate-risk zone"></button><button class="pin p3" title="Lower-risk zone"></button><span class="map-label ml1">Zone A · High</span><span class="map-label ml2">Zone B · Moderate</span><span class="map-label ml3">Zone C · Low</span><div class="map-legend"><span><i class="legend-dot" style="background:#ff4d5e"></i>High</span><span><i class="legend-dot" style="background:#ffb12e"></i>Moderate</span><span><i class="legend-dot" style="background:#32d5ad"></i>Low</span></div></div>
+      <p class="source-note">This stylized map is a UI placeholder. It is not a geographic map and does not represent actual flood boundaries.</p>
+    </div>
+    <div class="card"><div class="card-title"><h3>Hourly precipitation forecast</h3><span id="rainChartLabel">Forecast · mm</span></div>
+      <div id="forecastChart" class="small" style="min-height:190px;display:grid;align-content:center;gap:10px">Hourly forecast will appear after the weather API responds.</div><p class="source-note" id="forecastSource">Forecast values are model output, not observed rainfall. Source: Open-Meteo.</p>
+    </div>
+  </div>
+</section>
+
+<section id="predict" class="page">
+  <div class="card" style="max-width:850px;margin:auto"><div class="card-title"><div><h3>Flash flood risk assessment</h3><p class="sub" style="margin-top:6px">Enter a scenario to generate an illustrative risk category.</p></div><span>DEMO MODEL</span></div>
+    <form id="predictForm"><div class="form-grid">
+      <div class="field"><label for="rain">Rainfall in last hour (mm)</label><input id="rain" type="number" min="0" max="500" value="0" required></div>
+      <div class="field"><label for="water">Stream water level (m)</label><input id="water" type="number" min="0" max="20" step=".1" value="0" required></div>
+      <div class="field"><label for="slope">Terrain slope</label><select id="slope"><option value="1">Gentle</option><option value="2">Moderate</option><option value="3" selected>Steep</option></select></div>
+      <div class="field"><label for="soil">Ground saturation</label><select id="soil"><option value="1">Low</option><option value="2">Medium</option><option value="3" selected>High</option></select></div>
+      <div class="field form-full"><label for="region">Example monitoring region</label><select id="region"><option>Hilly catchment (demo)</option><option>Jammu & Kashmir (demo scenario)</option><option>Himalayan foothills (demo)</option></select></div>
+      <div class="form-full"><button class="btn" type="submit">Calculate demo risk</button></div>
+    </div></form>
+    <div id="predictionResult" class="prediction-result" aria-live="polite"><div class="result-title" id="resultTitle">High Risk</div><p id="resultText" class="small"></p><p id="resultAction" class="small"></p></div>
+    <p class="source-note">This manual-input predictor is an illustrative demo, not a validated model. The Live Regional Weather table now calculates a forecast-derived rainfall screening trigger from the next 24 hours. It does not estimate flood probability and must not be used for emergency decisions.</p>
+  </div>
+</section>
+
+<section id="alerts" class="page">
+  <div class="card"><div class="card-title"><h3>Warning centre</h3><span>Sample alerts</span></div><div class="alerts">
+    <div class="alert"><div class="alert-icon">⚠</div><div><b>HIGH RISK — Sample upstream zone</b><small>Illustrative alert: elevated rainfall and stream level. Verify all conditions with official sources.</small></div></div>
+    <div class="alert"><div class="alert-icon orange">⌁</div><div><b>MONITOR — Terrain and drainage</b><small>Steep terrain and saturated ground may increase runoff in a hypothetical scenario.</small></div></div>
+    <div class="alert"><div class="alert-icon green">✓</div><div><b>Preparedness reminder</b><small>Know local evacuation routes and follow official district administration and disaster-management advisories.</small></div></div>
+  </div><p class="source-note">No SMS, email, sensor, or government warning integration is connected in this prototype.</p></div>
+</section>
+
+
+<section id="regions" class="page">
+  <div class="card">
+    <div class="card-title"><div><h3>Regional weather &amp; flood-risk screening</h3><p class="sub" style="margin-top:6px">Each city displays its current weather and a forecast-based rainfall screening status.</p></div><span>LIVE API · 1-MINUTE REFRESH</span></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:13px 15px;margin:0 0 16px;border:1px solid #d9e7f2;border-radius:12px;background:#f4f9fd;color:#36536a;font-size:12px;line-height:1.55">
+      <strong style="color:#183650">How to read the status:</strong>
+      <span><b style="color:#b7791f">WATCH</b> = rainfall forecast meets a watch threshold</span>
+      <span><b style="color:#c93449">ELEVATED</b> = rainfall forecast meets a higher threshold</span>
+      <span><b style="color:#087f5b">NO RAINFALL TRIGGER</b> = thresholds not reached</span>
+      <span style="color:#718096">These are weather-only screening indicators, not official flood warnings.</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;min-width:760px;font-size:13px">
+        <thead><tr style="color:#8fa9bd;text-align:left;border-bottom:1px solid #21465d">
+          <th style="padding:12px 8px">Region / city</th><th style="padding:12px 8px">Current temperature (°C)</th><th style="padding:12px 8px">Current precipitation*</th><th style="padding:12px 8px">Humidity</th><th style="padding:12px 8px">Wind</th><th style="padding:12px 8px">Next 24h rain</th><th style="padding:12px 8px">Peak rain chance</th><th style="padding:12px 8px">Flood-risk screening status</th><th style="padding:12px 8px">River gauge</th><th style="padding:12px 8px">Data status</th>
+        </tr></thead><tbody id="regionsTable"><tr><td colspan="10" style="padding:18px;color:#8fa9bd">Fetching live weather from Open-Meteo…</td></tr></tbody>
+      </table>
+    </div>
+    <p class="source-note" id="regionsNotice">Weather and forecasts are model-derived for representative city points. The screening status is calculated from next-24-hour rainfall, peak hourly rainfall and rain probability using illustrative thresholds only. It is not a validated flood prediction or an official warning. River levels require a verified official gauge feed. Follow IMD, CWC and local administration advisories for real-world safety decisions.</p>
+  </div>
+
+</section>
+
+<section id="about" class="page">
+  <div class="card"><div class="card-title"><h3>About the project</h3><span>HydraBytes</span></div><p style="line-height:1.7;color:#bfd2df">The proposed system explores how multi-source environmental data could support localized flash-flood risk assessment in hilly regions. It is designed as a decision-support concept for communities and disaster-management teams.</p>
+    <div class="metrics" style="grid-template-columns:repeat(2,1fr)">
+      <div class="metric"><div class="metric-label">INPUT LAYER</div><div class="metric-val" style="font-size:18px">Environmental data</div><p class="small">Rainfall, weather, satellite observations, stream levels, terrain and elevation.</p></div>
+      <div class="metric"><div class="metric-label">PROCESSING</div><div class="metric-val" style="font-size:18px">Data + ML</div><p class="small">Cleaning, feature extraction and a future trained risk-classification model.</p></div>
+      <div class="metric"><div class="metric-label">OUTPUT</div><div class="metric-val" style="font-size:18px">Risk dashboard</div><p class="small">Risk category, GIS-style visualization and localized warning interface.</p></div>
+      <div class="metric"><div class="metric-label">PROPOSED STACK</div><div class="metric-val" style="font-size:18px">Python + GIS</div><p class="small">Python, Pandas, NumPy, scikit-learn, mapping, weather APIs and a cloud database.</p></div>
+    </div>
+    <h3 style="margin-top:26px">Proposed workflow</h3><div class="alerts">
+      <div class="alert"><div class="alert-icon green">01</div><div><b>Data collection & cleaning</b><small>Gather and validate weather, rainfall, water-level and terrain information.</small></div></div>
+      <div class="alert"><div class="alert-icon green">02</div><div><b>Feature extraction</b><small>Convert raw measurements into useful indicators for risk assessment.</small></div></div>
+      <div class="alert"><div class="alert-icon orange">03</div><div><b>Risk prediction</b><small>Train and validate a model when suitable labelled historical data is available.</small></div></div>
+      <div class="alert"><div class="alert-icon">04</div><div><b>GIS dashboard & alerts</b><small>Present localized risk levels and connect to verified alert channels in a later phase.</small></div></div>
+    </div>
+    <p class="source-note">Research directions listed in the project brief include IMD, ISRO/Earth Observation resources, Central Water Commission, DEM/GIS datasets, and historical rainfall and flash-flood records.</p>
+  </div>
+</section>
+<div class="footer">HYDRABYTES • MDC AI PROJECT PROTOTYPE • DEMONSTRATION DATA ONLY</div>
+</main>
+</div>
+<script>
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+document.getElementById('predictForm').addEventListener('submit', async function(e){
+ e.preventDefault();
+ const payload = {
+   rainfall_mm: Number(document.getElementById('rain').value),
+   water_level_m: Number(document.getElementById('water').value),
+   slope: document.getElementById('slope').value,
+   soil_saturation: document.getElementById('soil').value,
+   region: document.getElementById('region').value
+ };
+ const box=document.getElementById('predictionResult');
+ box.classList.add('show');
+ document.getElementById('resultTitle').textContent='Calculating…';
+ document.getElementById('resultText').textContent='Sending inputs to the Python Flask backend.';
+ document.getElementById('resultAction').textContent='';
+ try {
+   const response = await fetch('/api/predict', {
+     method:'POST',
+     headers:{'Content-Type':'application/json'},
+     body:JSON.stringify(payload)
+   });
+   const data = await response.json();
+   if(!response.ok) throw new Error(data.error || 'Prediction request failed');
+   const colors={LOW:'#38d9a9',MODERATE:'#ffb12e',HIGH:'#ff704a',CRITICAL:'#ff4d5e'};
+   const color=colors[data.risk_level] || '#21d4f4';
+   document.getElementById('resultTitle').textContent=data.risk_level+' RISK';
+   document.getElementById('resultTitle').style.color=color;
+   document.getElementById('resultText').textContent=`Model output: ${data.risk_level}. Inputs — rainfall ${payload.rainfall_mm} mm/hour, stream level ${payload.water_level_m} m, slope ${payload.slope}, soil saturation ${payload.soil_saturation}. Demo model confidence: ${(data.demo_confidence*100).toFixed(0)}%.`;
+   document.getElementById('resultAction').textContent=data.recommendation;
+   document.getElementById('overviewRisk').textContent=data.risk_level.charAt(0)+data.risk_level.slice(1).toLowerCase();
+   document.getElementById('overviewRisk').style.color=color;
+   document.getElementById('overviewPill').textContent=data.risk_level;
+   document.getElementById('overviewPill').style.color=color;
+   document.getElementById('overviewMeter').style.width=data.risk_score+'%';
+   document.getElementById('overviewMeter').style.background=color;
+   document.getElementById('overviewCaption').textContent='Prototype model output only; not a live flood warning.';
+ } catch(error) {
+   document.getElementById('resultTitle').textContent='Backend not connected';
+   document.getElementById('resultTitle').style.color='#ffb12e';
+   document.getElementById('resultText').textContent=error.message+' Make sure Flask is running and open the site at http://127.0.0.1:5000.';
+   document.getElementById('resultAction').textContent='No prediction was produced.';
+ }
+});
+
+function fmt(value, suffix='') { return value === null || value === undefined || value === '' ? 'Unavailable' : `${value}${suffix}`; }
+function safeTime(value) {
+  if (!value) return 'Unavailable';
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? value : d.toLocaleString('en-IN', { timeZone:'Asia/Kolkata', dateStyle:'medium', timeStyle:'short' }) + ' IST';
+}
+function renderForecast(hours) {
+  const el=document.getElementById('forecastChart');
+  if(!hours || !hours.length){el.textContent='Forecast unavailable. Refresh later.';return;}
+  el.innerHTML=hours.slice(0,6).map(item=>{
+    const t=item.time ? item.time.slice(11,16) : '--:--';
+    const p=item.precipitation_mm;
+    const prob=item.precipitation_probability_pct;
+    const width=Math.max(2,Math.min(100,Number(p||0)*12));
+    return `<div style="display:grid;grid-template-columns:55px 1fr 70px;gap:9px;align-items:center"><span>${t}</span><div style="height:8px;background:#132c40;border-radius:8px;overflow:hidden"><div style="height:8px;width:${width}%;background:#21d4f4"></div></div><span style="text-align:right">${fmt(p,' mm')}${prob===null||prob===undefined?'':` · ${prob}%`}</span></div>`;
+  }).join('');
+}
+async function loadStateScenarios(forceRefresh=false){
+  const body=document.getElementById('regionsTable');
+  const notice=document.getElementById('regionsNotice');
+  try{
+    const endpoint=forceRefresh ? '/api/regions?refresh=1' : '/api/regions';
+    const response=await fetch(endpoint, {cache:'no-store'});
+    const data=await response.json();
+    if(!response.ok) throw new Error(data.error||'Could not load weather data');
+    body.innerHTML=data.regions.map(r=>{
+      const c=r.current_conditions;
+      const ok=!!c;
+      const f=r.forecast_summary||{};
+      const trigger=f.weather_trigger||'Unavailable';
+      const triggerColor=trigger==='Elevated'?'#ff6b78':trigger==='Watch'?'#ffb85c':trigger==='No rainfall trigger'?'#76f0cb':'#8fa9bd';
+      return `<tr style="border-bottom:1px solid #183447">
+        <td style="padding:13px 8px;font-weight:700">${r.state}<div style="font-size:10px;color:#8fa9bd;margin-top:4px">${r.location}</div></td>
+        <td style="padding:13px 8px">${ok?fmt(c.temperature_c,' °C'):'Unavailable'}</td>
+        <td style="padding:13px 8px">${ok?fmt(c.precipitation_mm,' mm'):'Unavailable'}<div style="font-size:10px;color:#8fa9bd;margin-top:4px">Current precipitation</div></td>
+        <td style="padding:13px 8px">${ok?fmt(c.relative_humidity_pct,'%'):'Unavailable'}</td>
+        <td style="padding:13px 8px">${ok?fmt(c.wind_speed_kmh,' km/h'):'Unavailable'}</td>
+        <td style="padding:13px 8px">${fmt(f.next_24h_precipitation_mm,' mm')}</td>
+        <td style="padding:13px 8px">${fmt(f.max_precipitation_probability_pct,'%')}</td>
+        <td style="padding:13px 8px">
+          <span style="display:inline-block;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:850;letter-spacing:.35px;background:${trigger==='Elevated'?'#fff0f1':trigger==='Watch'?'#fff7e8':trigger==='No rainfall trigger'?'#e8f7f1':'#eef2f6'};color:${trigger==='Elevated'?'#c93449':trigger==='Watch'?'#a66a10':trigger==='No rainfall trigger'?'#087f5b':'#718096'};border:1px solid ${trigger==='Elevated'?'#f4c9cf':trigger==='Watch'?'#f2dfb5':trigger==='No rainfall trigger'?'#c9eadb':'#dce4ec'}">${trigger==='Elevated'?'ELEVATED':trigger==='Watch'?'WATCH':trigger==='No rainfall trigger'?'NO RAINFALL TRIGGER':'UNAVAILABLE'}</span>
+          <div style="font-size:10px;color:#8fa9bd;margin-top:5px">${f.next_24h_precipitation_mm==null?'Forecast unavailable':`${fmt(f.next_24h_precipitation_mm,' mm')} forecast rain / 24h`}</div>
+        </td>
+        <td style="padding:13px 8px;color:#ffb85c">Unavailable<div style="font-size:10px;color:#8fa9bd;margin-top:4px">Official feed not configured</div></td>
+        <td style="padding:13px 8px;color:${ok?'#76f0cb':'#ffb85c'};font-weight:700">${ok?'LIVE API RESPONSE':'DATA UNAVAILABLE'}<div style="font-size:10px;color:#8fa9bd;margin-top:4px">${ok?safeTime(c.time):'Retry later'}</div></td>
+      </tr>`;
+    }).join('');
+    notice.textContent=data.data_notice;
+    document.getElementById('weatherUpdated').textContent=safeTime(data.retrieved_at_utc);
+    document.getElementById('weatherStatus').textContent=data.partial_failures && data.partial_failures.length ? 'Some locations unavailable' : 'Weather API responded';
+    const first=data.regions.find(r=>r.current_conditions);
+    if(first){
+      document.getElementById('rainMetric').textContent=fmt(first.current_conditions.precipitation_mm);
+      document.getElementById('rainFoot').textContent=`${first.location} · model current condition`;
+      document.getElementById('overviewCaption').textContent=`Weather for ${first.location}; not a flood warning`;
+      renderForecast(first.forecast);
+    } else {
+      document.getElementById('rainMetric').textContent='Unavailable';
+      document.getElementById('rainFoot').textContent='Weather API unavailable';
+      document.getElementById('forecastChart').textContent='Forecast unavailable. Refresh later.';
+    }
+    document.getElementById('waterMetric').textContent='Unavailable';
+    document.getElementById('overviewRisk').textContent='Not calculated';
+    document.getElementById('overviewPill').textContent='NOT A WARNING';
+    document.getElementById('overviewMeter').style.width='0%';
+    document.getElementById('overviewCaption').textContent='Weather feed is not a validated flood-risk prediction.';
+  }catch(err){
+    body.innerHTML=`<tr><td colspan="10" style="padding:18px;color:#ffb12e">Live weather could not be loaded. Check internet access and refresh. ${err.message}</td></tr>`;
+    document.getElementById('weatherStatus').textContent='API unavailable';
+    document.getElementById('rainMetric').textContent='Unavailable';
+    document.getElementById('waterMetric').textContent='Unavailable';
+    document.getElementById('forecastChart').textContent='Forecast unavailable. Refresh later.';
+  }
+}
+loadStateScenarios(true);
+// Force a fresh API request when the page opens. Thereafter, refresh at one-minute
+// intervals; the backend shares a 60-second cache to avoid duplicate API calls.
+setInterval(() => loadStateScenarios(false), 60*1000);
+// Force fresh data when the user returns to this tab.
+document.addEventListener('visibilitychange', () => { if (!document.hidden) loadStateScenarios(true); });
+
+</script>
+</body>
+</html>
