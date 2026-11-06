@@ -31,3 +31,4 @@ Open http://127.0.0.1:5001
 - River gauge levels are unavailable because no verified official gauge feed is configured.
 - The in-memory cache is temporary and may not be shared across Vercel serverless instances.
 - Follow official IMD, CWC and local disaster-management advisories for real-world decisions.
+# MDC-project
